@@ -71,7 +71,7 @@ function create() {
     engine.container.appendChild(fpsMeterItem);
 
     fpsMeter = new FpsMeter(() => {
-        fpsMeterItem.innerHTML = 'FPS: ' + fpsMeter.getFrameRate().toFixed(2).toString();
+        fpsMeterItem.innerHTML = 'FPS, bruh: ' + fpsMeter.getFrameRate().toFixed(2).toString();
     });
 
     setInterval(update, 1000.0 / engine.fpsMax);
