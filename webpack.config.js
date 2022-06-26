@@ -25,24 +25,25 @@ const config = {
     },
     plugins: [
         new CleanWebpackPlugin(),
-        new CopyPlugin([
-            { from: 'src/index.html' },
-            { from: 'src/css/style.css', to: 'css/' },
-            { from: 'src/images/logo.png', to: 'images/' },
-		]),
-		new DefinePlugin({
-			IS_DEBUG: JSON.stringify(isDev),
-		}),
+        new CopyPlugin({
+            patterns: [
+                { from: 'src/index.html' },
+                { from: 'src/css/style.css', to: 'css/' },
+                { from: 'src/images/logo.png', to: 'images/' },
+            ]
+        }),
+        new DefinePlugin({
+            IS_DEBUG: JSON.stringify(isDev),
+        }),
     ],
     devServer: {
-        contentBase: path.join(__dirname, 'dist'),
         compress: true,
         port: 8080,
         hot: true
     },
     optimization: {
         minimize: !isDev
-      }
+    }
 };
 
 module.exports = config;
