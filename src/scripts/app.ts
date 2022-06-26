@@ -1,6 +1,8 @@
 import * as PIXI from 'pixi.js'
 import { FpsMeter } from './fps_meter';
 
+declare var IS_DEBUG: boolean;
+
 const app = new PIXI.Application({
     autoStart: false,
     width: 800,
@@ -21,7 +23,7 @@ app.loader
 
         const container = document.getElementById('game');
         if (!container) {
-            throw new Error("game container doesn't exist. Exiting.");
+            throw new Error("'game' container doesn't exist. Exiting.");
         }
 
         // make extra sure the container is empty
@@ -30,13 +32,18 @@ app.loader
         }
         container.appendChild(app.view);
 
-        const fpsMeter = new FpsMeter(container);
 
         app.ticker.add((delta) => {
-            fpsMeter.tick(app.ticker.FPS);
             sprite.rotation += 0.1 * delta;
             app.renderer.render(app.stage);
         });
+
+        if (IS_DEBUG) {
+            const fpsMeter = new FpsMeter(container);
+            app.ticker.add((_) => {
+                fpsMeter.tick(app.ticker.FPS);
+            });
+        }
 
         // only start once everything's ready
         app.start();

@@ -1,5 +1,6 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
+const { DefinePlugin } = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const isDev = process.env.NODE_ENV !== 'production';
 
@@ -28,7 +29,10 @@ const config = {
             { from: 'src/index.html' },
             { from: 'src/css/style.css', to: 'css/' },
             { from: 'src/images/logo.png', to: 'images/' },
-        ]),
+		]),
+		new DefinePlugin({
+			IS_DEBUG: JSON.stringify(isDev),
+		}),
     ],
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
