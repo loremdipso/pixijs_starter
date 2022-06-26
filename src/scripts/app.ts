@@ -29,8 +29,8 @@ class Engine {
 
         this.container = params.containerId ? document.getElementById(params.containerId) || document.body : document.body;
         this.container.appendChild(this.renderer.view);
-    } // constructor
-} // Engine
+    }
+}
 
 const engine = new Engine({
     containerId: 'game',
@@ -42,21 +42,13 @@ const engine = new Engine({
 let fpsMeter: FpsMeter;
 const sprite = PIXI.Sprite.from('images/logo.png');
 
-// ==============
-// === STATES ===
-// ==============
-
 window.onload = load;
 
 function load() {
     create();
-} // load
+}
 
 function create() {
-    /* ***************************** */
-    /* Create your Game Objects here */
-    /* ***************************** */
-
     /* Sprite */
     sprite.anchor.set(0.5);
     sprite.x = engine.renderer.width / 2;
@@ -69,32 +61,22 @@ function create() {
     engine.container.appendChild(fpsMeterItem);
 
     fpsMeter = new FpsMeter(() => {
-        fpsMeterItem.innerHTML = 'FPS, bruh: ' + fpsMeter.getFrameRate().toFixed(2).toString();
+        fpsMeterItem.innerHTML = 'FPS: ' + fpsMeter.getFrameRate().toFixed(2).toString();
     });
 
     setInterval(update, 1000.0 / engine.fpsMax);
     render();
-} // create
+}
 
-function update() {
+function update(time: number) {
+    console.log({time});
     fpsMeter.updateTime();
-
-    /* ***************************** */
-    /* Update your Game Objects here */
-    /* ***************************** */
-
-} // update
+    sprite.rotation += 0.01;
+}
 
 function render() {
     requestAnimationFrame(render);
 
-    /* ***************************** */
-    /* Render your Game Objects here */
-    /* ***************************** */
-
-    /* Sprite */
-    sprite.rotation += 0.01;
-
     engine.renderer.render(engine.stage);
     fpsMeter.tick();
-} // render
+}
