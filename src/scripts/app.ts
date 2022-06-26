@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js'
 import { FpsMeter } from './fps_meter';
+import logo from "../images/logo.png";
 
 declare var IS_DEBUG: boolean;
 
@@ -10,10 +11,14 @@ const app = new PIXI.Application({
     antialias: true
 });
 
+// NOTE: if we want to load assets async this is how we'd do it
+    // .add('logo', 'images/logo.png')
+    // .load(async (_, resources) => {
+        // const sprite = new PIXI.Sprite(resources.logo!.texture);
+
 app.loader
-    .add('logo', 'images/logo.png')
-    .load(async (_, resources) => {
-        const sprite = new PIXI.Sprite(resources.logo!.texture);
+    .load(async () => {
+        const sprite = PIXI.Sprite.from(logo);
 
         // Sprite
         sprite.anchor.set(0.5);

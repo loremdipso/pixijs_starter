@@ -21,6 +21,10 @@ const config = {
                 loader: 'ts-loader',
                 exclude: /node_modules/,
             },
+            {
+                test: /\.(png|jpg|jpeg|gif)$/i,
+                type: 'asset/inline'
+            }
         ]
     },
     plugins: [
@@ -38,6 +42,7 @@ const config = {
     ],
     devServer: {
         compress: true,
+        historyApiFallback: true,
         port: 8080,
         hot: true
     },
