@@ -1,34 +1,28 @@
 
 export class FpsMeter {
-	private numFrames: number;
 	private elapsedTime: number;
 	private previousTime: number;
+	private htmlElement: HTMLElement;
 
-	constructor(public render: () => void, private refreshDelay = 500) {
-		this.numFrames = 0;
+	constructor(container: HTMLElement, private refreshDelay = 500) {
+		this.htmlElement = document.createElement('div');
+		this.htmlElement.classList.add('fps');
+		container.appendChild(this.htmlElement);
+
 		this.elapsedTime = 0;
 		this.previousTime = performance.now();
 	}
 
-	updateTime() {
+	tick(fps: number) {
 		this.elapsedTime = performance.now() - this.previousTime;
-	}
-
-	tick() {
-		this.numFrames++;
 		if (this.elapsedTime > this.refreshDelay) {
-			this.render();
+			this.htmlElement.innerHTML = `FPS: ${fps.toFixed(2)}`;
 			this.reset();
 		}
 	}
 
 	reset() {
-		this.numFrames = 0;
 		this.elapsedTime = 0;
 		this.previousTime = performance.now();
-	}
-
-	getFrameRate() {
-		return 1000.0 * this.numFrames / this.elapsedTime;
 	}
 }
