@@ -1,7 +1,5 @@
-// app.ts
-
 import * as PIXI from 'pixi.js'
-import { FpsMeter } from './fps-meter';
+import { FpsMeter } from './fps_meter';
 
 interface EngineParams {
     containerId: string,

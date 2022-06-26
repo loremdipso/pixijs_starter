@@ -5,6 +5,26 @@ body {
 	line-height: 1.5;
 }
 
+html, body {
+	margin: 0;
+}
+
+#game {
+	width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+	display: flex;
+}
+
+#game > canvas {
+	object-fit: contain;
+	width: 100%;
+	max-width: 100%;
+	max-height: 100%;
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
 .fps {
 	position: fixed;
 	left: 0px;

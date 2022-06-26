@@ -1,10 +1,11 @@
+
 export class FpsMeter {
-	private nbFrames: number;
+	private numFrames: number;
 	private elapsedTime: number;
 	private previousTime: number;
 
 	constructor(public render: () => void, private refreshDelay = 500) {
-		this.nbFrames = 0;
+		this.numFrames = 0;
 		this.elapsedTime = 0;
 		this.previousTime = performance.now();
 	}
@@ -14,7 +15,7 @@ export class FpsMeter {
 	}
 
 	tick() {
-		this.nbFrames++;
+		this.numFrames++;
 		if (this.elapsedTime > this.refreshDelay) {
 			this.render();
 			this.reset();
@@ -22,12 +23,12 @@ export class FpsMeter {
 	}
 
 	reset() {
-		this.nbFrames = 0;
+		this.numFrames = 0;
 		this.elapsedTime = 0;
 		this.previousTime = performance.now();
 	}
 
 	getFrameRate() {
-		return 1000.0 * this.nbFrames / this.elapsedTime;
+		return 1000.0 * this.numFrames / this.elapsedTime;
 	}
 }
