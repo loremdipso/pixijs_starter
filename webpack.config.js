@@ -8,7 +8,7 @@ const config = {
     mode: isDev ? 'development' : 'production',
     entry: './src/scripts/app.ts',
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'docs'),
         filename: 'bundle.js',
     },
     resolve: {
