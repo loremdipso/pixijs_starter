@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="71.145378mm"
+   height="71.145378mm"
+   viewBox="0 0 71.145378 71.145378"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="star.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="0.77771465"
+     inkscape:cx="218.58917"
+     inkscape:cy="447.46489"
+     inkscape:window-width="2560"
+     inkscape:window-height="1363"
+     inkscape:window-x="0"
+     inkscape:window-y="40"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1">
+    <inkscape:grid
+       type="xygrid"
+       id="grid55"
+       originx="77.215721"
+       originy="-29.146636" />
+  </sodipodi:namedview>
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(77.215717,-29.146635)">
+    <path
+       sodipodi:type="star"
+       style="fill:#ffff00"
+       id="path141"
+       inkscape:flatsided="false"
+       sodipodi:sides="12"
+       sodipodi:cx="-489.0498"
+       sodipodi:cy="-47.076706"
+       sodipodi:r1="135.81584"
+       sodipodi:r2="68.593216"
+       sodipodi:arg1="0.90515118"
+       sodipodi:arg2="0.62127403"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m -405.17447,59.74497 -28.09962,-66.8955134 -36.54838,94.5217914 9.11277,-71.983023 -78.91272,63.584081 43.8834,-57.782741 -100.13246,15.609068 66.89551,-28.0996201 -94.52179,-36.5483829 71.98302,9.112772 -63.58408,-78.912724 57.78274,43.883404 -15.60906,-100.132462 28.09962,66.895512 36.54838,-94.521792 -9.11277,71.98302 78.91272,-63.58408 -43.8834,57.78274 100.13246,-15.60906 -66.89551,28.09962 94.52179,36.548378 -71.98302,-9.112772 63.58408,78.9127237 -57.78274,-43.8834037 z"
+       transform="matrix(0.26458333,0,0,0.26458333,87.751396,77.175034)"
+       inkscape:transform-center-x="-1.630166e-06" />
+  </g>
+</svg>

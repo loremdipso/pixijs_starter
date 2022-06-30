@@ -22,7 +22,7 @@ const config = {
                 exclude: /node_modules/,
             },
             {
-                test: /\.(png|jpg|jpeg|gif)$/i,
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
                 type: 'asset/inline'
             }
         ]
@@ -33,7 +33,7 @@ const config = {
             patterns: [
                 { from: 'src/index.html' },
                 { from: 'src/css/style.css', to: 'css/' },
-                { from: 'src/images/logo.png', to: 'images/' },
+                // { from: 'src/images/*', to: 'images/' },
             ]
         }),
         new DefinePlugin({
