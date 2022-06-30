@@ -1,6 +1,7 @@
 import * as PIXI from 'pixi.js'
 import { FpsMeter } from './components/FpsMeter';
 import { Spinner } from './components/Spinner';
+import '../css/style.scss';
 
 declare var IS_DEBUG: boolean;
 
@@ -31,10 +32,10 @@ function addUpdatable(child: IUpdatable & PIXI.DisplayObject) {
     app.stage.addChild(child);
 }
 
-function time(callback: Function, label: string) {
-    const start = performance.now();
+function time(callback: Function, _label: string) {
+    // const start = performance.now();
     callback();
-    console.log(`Elapsed for ${label}: ${performance.now() - start}`);
+    // console.log(`Elapsed for ${label}: ${performance.now() - start}`);
 }
 
 // NOTE: if we want to load assets async this is how we'd do it
