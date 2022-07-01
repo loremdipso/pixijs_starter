@@ -2,6 +2,7 @@ const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 const { DefinePlugin } = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const isDev = process.env.NODE_ENV !== 'production';
 
 const config = {
@@ -42,6 +43,11 @@ const config = {
 		]
 	},
 	plugins: [
+		isDev ? null : new BundleAnalyzerPlugin({
+			analyzerMode: 'static',
+			openAnalyzer: false,
+			reportFilename: '../report.html'
+		}),
 		new CleanWebpackPlugin(),
 		new CopyPlugin({
 			patterns: [
