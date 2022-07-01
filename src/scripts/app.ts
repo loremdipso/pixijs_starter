@@ -2,7 +2,8 @@ import * as PIXI from 'pixi.js';
 import { FpsMeter } from './fps_meter';
 import { time } from './utils';
 import { BaseGame } from './base_game';
-import { Tetromino } from './components/tetromino';
+import { Keyboard } from './utils/keyboard';
+import { Tetromino, ITetrominoType } from './components/tetromino';
 import { WIDTH, HEIGHT } from './constants';
 import type { IUpdatable } from "./types";
 import '../css/style.scss';
@@ -12,8 +13,12 @@ declare var IS_DEBUG: boolean;
 class Game extends BaseGame {
 	pieces: Tetromino[] = [];
 
+	private keyboard: Keyboard;
+
 	constructor(app: PIXI.Application, container: HTMLElement) {
 		super(app, container);
+		this.keyboard = new Keyboard(window);
+
 		// NOTE: if we want to load assets async this is how we'd do it
 		// .add('logo', 'images/logo.png')
 		// .load(async (_, resources) => {
@@ -37,7 +42,9 @@ class Game extends BaseGame {
 				// 		}));
 				// 	}
 				// }
-				this.addUpdatable(new Tetromino());
+				// this.addUpdatable(new Tetromino(ITetrominoType.SQUARE));
+				const active_tetromino = new Tetromino(ITetrominoType.L);
+				this.addUpdatable(active_tetromino);
 
 				this.ticker.add((delta) => {
 					time(() => {

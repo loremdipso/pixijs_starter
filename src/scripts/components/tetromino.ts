@@ -1,21 +1,64 @@
 import * as PIXI from 'pixi.js';
 import type { IUpdatable } from "../types";
-import { BOARD_WIDTH, BOARD_HEIGHT, SQUARE_SIZE, COLOR_BLUE, COLOR_RED, COLOR_GREEN } from '../constants';
+import { NUM_ROWS, BOARD_WIDTH, BOARD_HEIGHT, SQUARE_SIZE, COLOR_BLUE, COLOR_RED, COLOR_GREEN, TIME_STEP_MS } from '../constants';
+import { keys } from '../utils/keyboard';
 
 export enum ITetrominoType {
+    I,
     SQUARE,
+    L,
+    REVERSE_L,
+    S,
+    REVERSE_S,
+    T,
+}
+
+interface IShape {
+    color: number;
+    size: number;
+    positions: {row: number, col: number}[];
+}
+
+const SHAPES: { [key: number]: IShape } = {
+    [ITetrominoType.I]: {
+        color: COLOR_GREEN,
+        size: 4,
+        positions: [
+            { row: 0, col: 1 },
+            { row: 1, col: 1 },
+            { row: 2, col: 1 },
+            { row: 3, col: 1 },
+        ]
+    },
+
+    [ITetrominoType.L]: {
+        color: COLOR_RED,
+        size: 3,
+        positions: [
+            { row: 1, col: 0 },
+            { row: 1, col: 1 },
+            { row: 1, col: 2 },
+            { row: 0, col: 2 },
+        ]
+    },
 }
 
 export class Tetromino extends PIXI.Container implements IUpdatable {
     private squares: Square[] = [];
+    private last_step = 0;
 
-    constructor(type?: ITetrominoType) {
+    constructor(type: ITetrominoType) {
         super();
+        this.last_step = performance.now();
 
-        this.addSquare(COLOR_RED, 0, 0);
-        this.addSquare(COLOR_GREEN, 1, 1);
-        // this.anchor.set(0.5);
-        // this.width = this.height = SQUARE_SIZE;
+        const shape = SHAPES[type];
+        for (const pos of shape.positions) {
+            this.addSquare(COLOR_RED, pos.row, pos.col);
+        }
+
+        const delta = SQUARE_SIZE * (shape.size / 2);
+        this.position.set(delta, delta);
+        this.pivot.set(delta, delta);
     }
 
     private addSquare(tint: number, row: number, col: number) {
@@ -25,8 +68,43 @@ export class Tetromino extends PIXI.Container implements IUpdatable {
     }
 
     update(delta: number) {
-        // this.rotation += 0.01 * delta;
-        // this.y += delta;
+        const now = performance.now();
+        if (now - this.last_step > TIME_STEP_MS) {
+            this.y += SQUARE_SIZE
+            this.last_step = now;
+        }
+
+        if (keys.right.trigger()) {
+            this.moveRight();
+        } else if (keys.left.trigger()) {
+            this.moveLeft();
+        }
+
+        if (keys.up.trigger()) {
+            this.rotateRight();
+        } else if (keys.down.trigger()) {
+            this.moveDown();
+        }
+    }
+
+    rotateRight() {
+        this.angle = (this.angle + 90) % 360;
+    }
+
+    rotateLeft() {
+        this.angle = (this.angle - 90) % 360;
+    }
+
+    moveRight() {
+        this.x += SQUARE_SIZE;
+    }
+
+    moveLeft() {
+        this.x -= SQUARE_SIZE;
+    }
+
+    moveDown() {
+        this.y += SQUARE_SIZE;
     }
 }
 
@@ -35,7 +113,7 @@ class Square extends PIXI.Sprite {
         super(PIXI.Texture.WHITE);
         this.tint = tint;
         this.width = this.height = SQUARE_SIZE;
-        this.x = SQUARE_SIZE*row;
-        this.y = SQUARE_SIZE*col;
+        this.y = SQUARE_SIZE*row;
+        this.x = SQUARE_SIZE*col;
     }
 }
