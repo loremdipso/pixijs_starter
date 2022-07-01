@@ -1,12 +1,16 @@
 import * as PIXI from 'pixi.js';
 import { FpsMeter } from './fps_meter';
 import { time } from './utils';
-import { Spinner } from './components/Spinner';
 import { BaseGame } from './base_game';
+import { Tetromino } from './components/tetromino';
+import { WIDTH, HEIGHT } from './constants';
+import type { IUpdatable } from "./types";
 import '../css/style.scss';
 declare var IS_DEBUG: boolean;
 
+
 class Game extends BaseGame {
+	pieces: Tetromino[] = [];
 
 	constructor(app: PIXI.Application, container: HTMLElement) {
 		super(app, container);
@@ -17,22 +21,23 @@ class Game extends BaseGame {
 
 		this.app.loader
 			.load(async () => {
-				const NUM_COLS = 10;
-				const NUM_ROWS = 10;
+				// const NUM_COLS = 10;
+				// const NUM_ROWS = 10;
 
-				const spinner_width = this.width / NUM_COLS;
-				const spinner_height = this.height / NUM_ROWS;
-				const spinner_size = Math.min(spinner_width, spinner_height);
+				// const spinner_width = this.width / NUM_COLS;
+				// const spinner_height = this.height / NUM_ROWS;
+				// const spinner_size = Math.min(spinner_width, spinner_height);
 
-				for (let c = 0; c < NUM_COLS; c++) {
-					for (let r = 0; r < NUM_ROWS; r++) {
-						this.addUpdatable(new Spinner({
-							x: spinner_width * c + spinner_width/2.0,
-							y: spinner_height * r + spinner_height/2.0,
-							size: spinner_size,
-						}));
-					}
-				}
+				// for (let c = 0; c < NUM_COLS; c++) {
+				// 	for (let r = 0; r < NUM_ROWS; r++) {
+				// 		this.addUpdatable(new Spinner({
+				// 			x: spinner_width * c + spinner_width/2.0,
+				// 			y: spinner_height * r + spinner_height/2.0,
+				// 			size: spinner_size,
+				// 		}));
+				// 	}
+				// }
+				this.addUpdatable(new Tetromino());
 
 				this.ticker.add((delta) => {
 					time(() => {
@@ -67,11 +72,8 @@ class Game extends BaseGame {
 (() => {
 	const app = new PIXI.Application({
 		autoStart: false,
-		// TODO: this value matters a lot
-		width: 600,
-		height: 1024,
-		// width: 1024,
-		// height: 600,
+		width: WIDTH,
+		height: HEIGHT,
 		antialias: true
 	});
 

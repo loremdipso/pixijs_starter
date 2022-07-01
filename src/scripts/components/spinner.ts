@@ -1,5 +1,6 @@
 import * as PIXI from 'pixi.js';
 import star from "../../images/star.svg";
+import type { IUpdatable } from "../types";
 
 export class Spinner extends PIXI.Sprite implements IUpdatable {
     constructor(options: {x: number, y: number, size?: number}) {
