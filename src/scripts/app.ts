@@ -1,33 +1,15 @@
 import * as PIXI from 'pixi.js';
-import { FpsMeter } from './FpsMeter';
+import { FpsMeter } from './fps_meter';
 import { time } from './utils';
 import { Spinner } from './components/Spinner';
+import { BaseGame } from './base_game';
 import '../css/style.scss';
-
 declare var IS_DEBUG: boolean;
 
-class Game {
-	get width(): number {
-		return this.app.renderer.width;
-	}
+class Game extends BaseGame {
 
-	get height(): number {
-		return this.app.renderer.height;
-	}
-
-	get ticker(): PIXI.Ticker {
-		return this.app.ticker;
-	}
-
-	get renderer(): PIXI.Renderer {
-		return this.app.renderer;
-	}
-
-	get stage(): PIXI.Container {
-		return this.app.stage;
-	}
-
-	constructor(private app: PIXI.Application, private container: HTMLElement) {
+	constructor(app: PIXI.Application, container: HTMLElement) {
+		super(app, container);
 		// NOTE: if we want to load assets async this is how we'd do it
 		// .add('logo', 'images/logo.png')
 		// .load(async (_, resources) => {
