@@ -9,7 +9,7 @@ const app = new PIXI.Application({
     autoStart: false,
     // TODO: this value matters a lot
     width: 800,
-    height: 450,
+    height: 1600,
     antialias: true
 });
 
