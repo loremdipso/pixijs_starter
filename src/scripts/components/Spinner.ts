@@ -1,4 +1,4 @@
-import * as PIXI from 'pixi.js'
+import * as PIXI from '../mini_pixi'
 import star from "../../images/star.svg";
 
 export class Spinner extends PIXI.Sprite implements IUpdatable {

@@ -43,11 +43,11 @@ const config = {
 		]
 	},
 	plugins: [
-		isDev ? null : new BundleAnalyzerPlugin({
+		...(isDev ? [] : [new BundleAnalyzerPlugin({
 			analyzerMode: 'static',
 			openAnalyzer: false,
 			reportFilename: '../report.html'
-		}),
+		})]),
 		new CleanWebpackPlugin(),
 		new CopyPlugin({
 			patterns: [
