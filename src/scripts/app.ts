@@ -43,7 +43,9 @@ class Game extends BaseGame {
 				// 	}
 				// }
 				// this.addUpdatable(new Tetromino(ITetrominoType.SQUARE));
-				const active_tetromino = new Tetromino(ITetrominoType.L);
+				// const active_tetromino = new Tetromino(ITetrominoType.L);
+				// const active_tetromino = new Tetromino(ITetrominoType.SQUARE);
+				const active_tetromino = new Tetromino(ITetrominoType.T);
 				this.addUpdatable(active_tetromino);
 
 				this.ticker.add((delta) => {

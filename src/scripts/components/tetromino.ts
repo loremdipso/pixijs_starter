@@ -5,8 +5,8 @@ import { keys } from '../utils/keyboard';
 
 export enum ITetrominoType {
     I,
-    SQUARE,
     L,
+    SQUARE,
     REVERSE_L,
     S,
     REVERSE_S,
@@ -39,6 +39,61 @@ const SHAPES: { [key: number]: IShape } = {
             { row: 1, col: 1 },
             { row: 1, col: 2 },
             { row: 0, col: 2 },
+        ]
+    },
+
+    [ITetrominoType.SQUARE]: {
+        color: COLOR_GREEN,
+        size: 2,
+        positions: [
+            { row: 0, col: 0 },
+            { row: 0, col: 1 },
+            { row: 1, col: 0 },
+            { row: 1, col: 1 },
+        ]
+    },
+
+    [ITetrominoType.REVERSE_L]: {
+        color: COLOR_GREEN,
+        size: 3,
+        positions: [
+            { row: 1, col: 0 },
+            { row: 1, col: 1 },
+            { row: 1, col: 2 },
+            { row: 0, col: 0 },
+        ]
+    },
+
+    [ITetrominoType.S]: {
+        color: COLOR_RED,
+        size: 3,
+        positions: [
+            { row: 1, col: 0 },
+            { row: 1, col: 1 },
+            { row: 0, col: 1 },
+            { row: 0, col: 2 },
+        ]
+    },
+
+    [ITetrominoType.REVERSE_S]: {
+        color: COLOR_RED,
+        size: 3,
+        positions: [
+            { row: 0, col: 0 },
+            { row: 0, col: 1 },
+            { row: 1, col: 1 },
+            { row: 1, col: 2 },
+        ]
+    },
+
+    [ITetrominoType.T]: {
+        color: COLOR_BLUE,
+        size: 3,
+        positions: [
+            { row: 0, col: 1 },
+            { row: 1, col: 0 },
+            { row: 1, col: 1 },
+            { row: 1, col: 2 },
         ]
     },
 }
