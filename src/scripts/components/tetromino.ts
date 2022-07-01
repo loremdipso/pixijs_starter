@@ -65,7 +65,7 @@ const SHAPES: { [key: number]: IShape } = {
     },
 
     [ITetrominoType.S]: {
-        color: COLOR_RED,
+        color: COLOR_BLUE,
         size: 3,
         positions: [
             { row: 1, col: 0 },
@@ -109,14 +109,8 @@ export class Tetromino extends PIXI.Container implements IUpdatable {
         this.last_step = performance.now();
 
         const shape = SHAPES[type];
-        let first = true;
         for (const pos of shape.positions) {
-            if (first) {
-                this.addSquare(COLOR_RED, pos.row, pos.col);
-            } else {
-                this.addSquare(shape.color, pos.row, pos.col);
-            }
-            first = false;
+            this.addSquare(shape.color, pos.row, pos.col);
         }
 
         const delta = SQUARE_SIZE * (shape.size / 2);
@@ -144,9 +138,9 @@ export class Tetromino extends PIXI.Container implements IUpdatable {
     }
 
     consumeInputs() {
-        if (this.game.keys.right.trigger()) {
+        if (this.game.keys.right.repeatableTrigger()) {
             this.moveRight();
-        } else if (this.game.keys.left.trigger()) {
+        } else if (this.game.keys.left.repeatableTrigger()) {
             this.moveLeft();
         }
 
@@ -154,12 +148,6 @@ export class Tetromino extends PIXI.Container implements IUpdatable {
             this.rotateRight();
         } else if (this.game.keys.down.repeatableTrigger()) {
             this.moveDown();
-        }
-
-        if (this.game.mouse.left.trigger()) {
-            this.rotateLeft();
-        } else if (this.game.mouse.right.trigger()) {
-            this.rotateRight();
         }
     }
 
@@ -195,20 +183,20 @@ export class Tetromino extends PIXI.Container implements IUpdatable {
     }
 
     outOfBounds() {
+        const position = this.getGlobalPosition();
         for (const child of this.children) {
             const position = child.getGlobalPosition();
             // const position = child.toGlobal(new PIXI.Point(0, 0));
-            console.log({x: position.x});
-            if (position.y > BOARD_HEIGHT) {
+            // console.log({x: position.x});
+            if (position.y + SQUARE_SIZE > BOARD_HEIGHT) {
                 return true;
             }
             if (position.x < 0) {
                 return true;
             }
-            if (position.x > BOARD_WIDTH) {
+            if (position.x + SQUARE_SIZE > BOARD_WIDTH) {
                 return true;
             }
-            break;
         }
 
         return false;
