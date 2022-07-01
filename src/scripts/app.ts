@@ -1,4 +1,4 @@
-import * as PIXI from './mini_pixi'
+import * as PIXI from 'pixi.js';
 import { FpsMeter } from './components/FpsMeter';
 import { Spinner } from './components/Spinner';
 import '../css/style.scss';
