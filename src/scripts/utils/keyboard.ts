@@ -2,21 +2,27 @@ import { REPEAT_DELAY_MS, INITIAL_REPEAT_DELAY_MS } from '../constants';
 
 class Key {
     private pressed = false;
+    private released = true;
     private repeatsCount = 0;
     private repeatTimer = 0;
 
     constructor(protected code: string) {
     }
-    
-    /**
-     * Update repeat counters and check if action should be triggered
-     * @returns {boolean} true if action should be triggered
-     */
+    // Eats the event. Key must be released and then pressed to trigger again
     trigger(): boolean {
+        if (this.pressed) {
+            this.pressed = false;
+            return true;
+        }
+        return false;
+    }
+    
+    // Can fire multiple times for the same event. Has a short delay between.
+    repeatableTrigger(): boolean {
         if (this.pressed) {
             this.repeatTimer--;
             if (this.repeatTimer <= 0) {
-                this.repeatTimer = (this.repeatsCount > 0)
+                this.repeatTimer = this.repeatsCount > 0
                     ? REPEAT_DELAY_MS
                     : INITIAL_REPEAT_DELAY_MS;
                 this.repeatsCount++;
@@ -27,26 +33,19 @@ class Key {
     }
     
     onPress() {
-        this.pressed = true;
+        if (this.released) {
+            this.pressed = true;
+            this.released = false;
+        }
     }
     
     onRelease() {
         this.pressed = false;
+        this.released = true;
         this.repeatTimer = 0;
         this.repeatsCount = 0;
     }
 }
-
-export const keys = {
-    escape: new Key('Escape'),
-    space: new Key(' '),
-    left: new Key('ArrowLeft'),
-    up: new Key('ArrowUp'),
-    right: new Key('ArrowRight'),
-    shift: new Key('Shift'),
-    down: new Key('ArrowDown'),
-};
-
 
 /**
  * Handles keyboard controls for known keys
@@ -56,10 +55,20 @@ export const keys = {
 export class Keyboard {
     private key_map: any = {};
 
+    public keys = {
+        escape: new Key('Escape'),
+        space: new Key(' '),
+        left: new Key('ArrowLeft'),
+        up: new Key('ArrowUp'),
+        right: new Key('ArrowRight'),
+        shift: new Key('Shift'),
+        down: new Key('ArrowDown'),
+    };
+
     constructor(container: Window) {
-        for (const k in keys) {
-            if (keys.hasOwnProperty(k)) {
-                const v = (keys as any)[k];
+        for (const k in this.keys) {
+            if (this.keys.hasOwnProperty(k)) {
+                const v = (this.keys as any)[k];
                 this.key_map[v.code] = v;
             }
         }

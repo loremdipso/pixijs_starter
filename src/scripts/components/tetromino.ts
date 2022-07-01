@@ -1,7 +1,7 @@
 import * as PIXI from 'pixi.js';
 import type { IUpdatable } from "../types";
-import { NUM_ROWS, BOARD_WIDTH, BOARD_HEIGHT, SQUARE_SIZE, COLOR_BLUE, COLOR_RED, COLOR_GREEN, TIME_STEP_MS } from '../constants';
-import { keys } from '../utils/keyboard';
+import { NUM_ROWS, BOARD_WIDTH, BOARD_HEIGHT, SQUARE_SIZE, COLOR_BLUE, COLOR_RED, COLOR_GREEN } from '../constants';
+import { Game } from '../app';
 
 export enum ITetrominoType {
     I,
@@ -101,14 +101,22 @@ const SHAPES: { [key: number]: IShape } = {
 export class Tetromino extends PIXI.Container implements IUpdatable {
     private squares: Square[] = [];
     private last_step = 0;
+    private last_move = false;
+    private alive = true;
 
-    constructor(type: ITetrominoType) {
+    constructor(private game: Game, type: ITetrominoType) {
         super();
         this.last_step = performance.now();
 
         const shape = SHAPES[type];
+        let first = true;
         for (const pos of shape.positions) {
-            this.addSquare(COLOR_RED, pos.row, pos.col);
+            if (first) {
+                this.addSquare(COLOR_RED, pos.row, pos.col);
+            } else {
+                this.addSquare(shape.color, pos.row, pos.col);
+            }
+            first = false;
         }
 
         const delta = SQUARE_SIZE * (shape.size / 2);
@@ -123,22 +131,35 @@ export class Tetromino extends PIXI.Container implements IUpdatable {
     }
 
     update(delta: number) {
-        const now = performance.now();
-        if (now - this.last_step > TIME_STEP_MS) {
-            this.y += SQUARE_SIZE
-            this.last_step = now;
+        if (this.alive) {
+            const now = performance.now();
+            if (now - this.last_step > this.game.fall_delay) {
+                this.last_step = now;
+                this.outOfBounds();
+                // if (!this.moveDown()) {
+                //     this.alive = false;
+                // }
+            }
         }
+    }
 
-        if (keys.right.trigger()) {
+    consumeInputs() {
+        if (this.game.keys.right.trigger()) {
             this.moveRight();
-        } else if (keys.left.trigger()) {
+        } else if (this.game.keys.left.trigger()) {
             this.moveLeft();
         }
 
-        if (keys.up.trigger()) {
+        if (this.game.keys.up.trigger()) {
             this.rotateRight();
-        } else if (keys.down.trigger()) {
+        } else if (this.game.keys.down.repeatableTrigger()) {
             this.moveDown();
+        }
+
+        if (this.game.mouse.left.trigger()) {
+            this.rotateLeft();
+        } else if (this.game.mouse.right.trigger()) {
+            this.rotateRight();
         }
     }
 
@@ -152,14 +173,45 @@ export class Tetromino extends PIXI.Container implements IUpdatable {
 
     moveRight() {
         this.x += SQUARE_SIZE;
+        if (this.outOfBounds()) {
+            this.x -= SQUARE_SIZE;
+        }
     }
 
     moveLeft() {
         this.x -= SQUARE_SIZE;
+        if (this.outOfBounds()) {
+            this.x += SQUARE_SIZE;
+        }
     }
 
     moveDown() {
         this.y += SQUARE_SIZE;
+        if (this.outOfBounds()) {
+            this.y -= SQUARE_SIZE;
+            return false;
+        }
+        return true;
+    }
+
+    outOfBounds() {
+        for (const child of this.children) {
+            const position = child.getGlobalPosition();
+            // const position = child.toGlobal(new PIXI.Point(0, 0));
+            console.log({x: position.x});
+            if (position.y > BOARD_HEIGHT) {
+                return true;
+            }
+            if (position.x < 0) {
+                return true;
+            }
+            if (position.x > BOARD_WIDTH) {
+                return true;
+            }
+            break;
+        }
+
+        return false;
     }
 }
 

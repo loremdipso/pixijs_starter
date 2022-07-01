@@ -4,20 +4,28 @@ import { time } from './utils';
 import { BaseGame } from './base_game';
 import { Keyboard } from './utils/keyboard';
 import { Tetromino, ITetrominoType } from './components/tetromino';
-import { WIDTH, HEIGHT } from './constants';
+import { WIDTH, HEIGHT, TIME_STEP_MS } from './constants';
 import type { IUpdatable } from "./types";
 import '../css/style.scss';
+import { Mouse } from './utils/mouse';
 declare var IS_DEBUG: boolean;
 
 
-class Game extends BaseGame {
+export class Game extends BaseGame {
 	pieces: Tetromino[] = [];
 
-	private keyboard: Keyboard;
+	public fall_delay = TIME_STEP_MS;
+
+	public mouse: Mouse;
+	public keyboard: Keyboard;
+	get keys() {
+		return this.keyboard.keys;
+	}
 
 	constructor(app: PIXI.Application, container: HTMLElement) {
 		super(app, container);
 		this.keyboard = new Keyboard(window);
+		this.mouse = new Mouse(container);
 
 		// NOTE: if we want to load assets async this is how we'd do it
 		// .add('logo', 'images/logo.png')
@@ -45,11 +53,12 @@ class Game extends BaseGame {
 				// this.addUpdatable(new Tetromino(ITetrominoType.SQUARE));
 				// const active_tetromino = new Tetromino(ITetrominoType.L);
 				// const active_tetromino = new Tetromino(ITetrominoType.SQUARE);
-				const active_tetromino = new Tetromino(ITetrominoType.T);
+				const active_tetromino = new Tetromino(this, ITetrominoType.T);
 				this.addUpdatable(active_tetromino);
 
 				this.ticker.add((delta) => {
 					time(() => {
+						active_tetromino.consumeInputs();
 						for (const child of this.updatable) {
 							child.update(delta);
 						}

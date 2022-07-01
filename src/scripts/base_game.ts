@@ -24,12 +24,4 @@ export class BaseGame {
 	get stage(): PIXI.Container {
 		return this.app.stage;
 	}
-
-    // drawRect(color: PIXI.Texture) {
-    //     const rectangle = PIXI.Sprite.from(PIXI.Texture.WHITE);
-    //     rectangle.width = 300;
-    //     rectangle.height = 200;
-    //     rectangle.tint = 0xFF0000;
-    //     this.stage.addChild(rectangle);
-    // }
 }
