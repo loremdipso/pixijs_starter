@@ -1,4 +1,4 @@
-# Pixi.js Project #
+# Pixi.js Project Template #
 
 A generic frontend **Pixi.js** project boiler plate in **TypeScript** using **Webpack**.
 
