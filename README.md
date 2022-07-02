@@ -21,12 +21,12 @@ Main dependencies:
 
 ## Installation ##
 
-Node, TypeScript and TSLint should be installed globally.
+**🚀 Webpack 5 (recommended)**
 
-	$> git clone https://github.com/yahiko00/PixiProject.git <new folder>
-	$> cd <new folder>
-	$> git init
-	$> npm install
+```bash
+npx degit loremdipso/pixijs_starter
+npm install
+```
 
 
 ## Build ##
