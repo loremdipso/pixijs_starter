@@ -3,7 +3,7 @@ import { FpsMeter } from './fps_meter';
 import { time } from './utils';
 import { BaseGame } from './base_game';
 import { Keyboard } from './utils/keyboard';
-import { Tetromino, ITetrominoType } from './components/tetromino';
+import { Tetromino, ITetrominoType, getRandomTetromino } from './components/tetromino';
 import { WIDTH, HEIGHT, TIME_STEP_MS } from './constants';
 import type { IUpdatable } from "./types";
 import '../css/style.scss';
@@ -15,6 +15,9 @@ export class Game extends BaseGame {
 	pieces: Tetromino[] = [];
 
 	public fall_delay = TIME_STEP_MS;
+	public active_tetromino: Tetromino;
+	public shadow_tetromino: Tetromino;
+	public dead_pieces: Tetromino[] = [];
 
 	public mouse: Mouse;
 	public keyboard: Keyboard;
@@ -22,10 +25,25 @@ export class Game extends BaseGame {
 		return this.keyboard.keys;
 	}
 
+	public collidesWith(tetromino: Tetromino): boolean {
+		for (const piece of this.dead_pieces) {
+			if (piece.collidesWith(tetromino)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	constructor(app: PIXI.Application, container: HTMLElement) {
 		super(app, container);
 		this.keyboard = new Keyboard(window);
 		this.mouse = new Mouse(container);
+		this.active_tetromino = getRandomTetromino(this);
+		this.stage.addChild(this.active_tetromino);
+
+		this.shadow_tetromino = new Tetromino(this, this.active_tetromino.type);
+		this.stage.addChild(this.shadow_tetromino);
 
 		// NOTE: if we want to load assets async this is how we'd do it
 		// .add('logo', 'images/logo.png')
@@ -34,38 +52,22 @@ export class Game extends BaseGame {
 
 		this.app.loader
 			.load(async () => {
-				// const NUM_COLS = 10;
-				// const NUM_ROWS = 10;
-
-				// const spinner_width = this.width / NUM_COLS;
-				// const spinner_height = this.height / NUM_ROWS;
-				// const spinner_size = Math.min(spinner_width, spinner_height);
-
-				// for (let c = 0; c < NUM_COLS; c++) {
-				// 	for (let r = 0; r < NUM_ROWS; r++) {
-				// 		this.addUpdatable(new Spinner({
-				// 			x: spinner_width * c + spinner_width/2.0,
-				// 			y: spinner_height * r + spinner_height/2.0,
-				// 			size: spinner_size,
-				// 		}));
-				// 	}
-				// }
-				// this.addUpdatable(new Tetromino(ITetrominoType.SQUARE));
-				// const active_tetromino = new Tetromino(ITetrominoType.L);
-				// const active_tetromino = new Tetromino(ITetrominoType.SQUARE);
-				const active_tetromino = new Tetromino(this, ITetrominoType.T);
-				this.addUpdatable(active_tetromino);
-
 				this.ticker.add((delta) => {
-					time(() => {
-						active_tetromino.consumeInputs();
-						for (const child of this.updatable) {
-							child.update(delta);
-						}
-					}, "updates");
-					time(() => {
-						this.renderer.render(app.stage);
-					}, "rrender")
+					if (!this.active_tetromino.alive) {
+						this.dead_pieces.push(this.active_tetromino);
+						this.active_tetromino = getRandomTetromino(this);
+						this.stage.addChild(this.active_tetromino);
+
+						this.stage.removeChild(this.shadow_tetromino);
+						this.shadow_tetromino = new Tetromino(this, this.active_tetromino.type);
+						this.stage.addChild(this.shadow_tetromino);
+					}
+
+					this.active_tetromino.consumeInputs();
+					this.active_tetromino.update(delta);
+					this.shadow_tetromino.updateShadow(this.active_tetromino);
+
+					this.renderer.render(app.stage);
 				});
 
 				if (IS_DEBUG) {
@@ -73,17 +75,12 @@ export class Game extends BaseGame {
 					this.ticker.add((_) => {
 						fpsMeter.tick(app.ticker.FPS);
 					});
+					(window as any).__PIXI_INSPECTOR_GLOBAL_HOOK__ && (window as any).__PIXI_INSPECTOR_GLOBAL_HOOK__.register({ PIXI: PIXI });
 				}
 
 				// only start once everything's ready
 				this.app.start();
 			});
-	}
-
-	private updatable: IUpdatable[] = [];
-	addUpdatable(child: IUpdatable & PIXI.DisplayObject) {
-		this.updatable.push(child);
-		this.stage.addChild(child);
 	}
 }
 

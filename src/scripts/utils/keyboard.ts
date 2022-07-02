@@ -19,9 +19,7 @@ class Key {
     
     // Can fire multiple times for the same event. Has a short delay between.
     repeatableTrigger(): boolean {
-        console.log("a");
         if (this.pressed) {
-        console.log("b");
             this.repeatTimer--;
             if (this.repeatTimer <= 0) {
                 this.repeatTimer = (this.repeatsCount > 0)

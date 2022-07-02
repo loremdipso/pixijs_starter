@@ -9,6 +9,7 @@ export const BOARD_HEIGHT = SQUARE_SIZE * NUM_ROWS;
 export const WIDTH = BOARD_WIDTH;
 export const HEIGHT = BOARD_HEIGHT;
 
+export const COLOR_WHITE = 0x0d1137;
 export const COLOR_RED = 0xFF0000;
 export const COLOR_GREEN = 0x00FF00;
 export const COLOR_BLUE = 0x0000FF;
@@ -16,3 +17,5 @@ export const COLOR_BLUE = 0x0000FF;
 export const TIME_STEP_MS = 1000;
 export const REPEAT_DELAY_MS = 2;
 export const INITIAL_REPEAT_DELAY_MS = 10;
+
+export const EPSILON = 0.01;

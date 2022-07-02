@@ -44,9 +44,9 @@ const config = {
 	},
 	plugins: [
 		...(isDev ? [] : [new BundleAnalyzerPlugin({
-			analyzerMode: 'static',
-			openAnalyzer: false,
-			reportFilename: '../report.html'
+				analyzerMode: 'static',
+				openAnalyzer: false,
+				reportFilename: '../report.html'
 		})]),
 		new CleanWebpackPlugin(),
 		new CopyPlugin({
@@ -70,5 +70,9 @@ const config = {
 		minimize: !isDev
 	}
 };
+
+if (isDev) {
+	config.devtool = 'eval-source-map';
+}
 
 module.exports = config;
